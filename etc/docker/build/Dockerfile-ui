@@ -47,8 +47,8 @@ FROM eclipse-temurin:21-jre-jammy
 ENV PATH /usr/local/gitb-ui/bin:$PATH
 ENV TESTBED_SERVICE_URL http://gitb-srv:8080/itbsrv/TestbedService
 ENV TESTBED_CLIENT_URL http://gitb-ui:9090/TestbedClient
-ENV DB_DEFAULT_URL jdbc:mysql://gitb-mysql/gitb?characterEncoding=UTF-8&useUnicode=true&autoReconnect=true&useSSL=false&verifyServerCertificate=false&allowPublicKeyRetrieval=true
-ENV DB_DEFAULT_ROOTURL jdbc:mysql://gitb-mysql/
+ENV DB_DEFAULT_URL jdbc:postgresql://gitb-postgresql/gitb?ssl=false
+ENV DB_DEFAULT_ROOTURL jdbc:postgresql://gitb-postgresql/
 ENV REDIS_HOST gitb-redis
 
 COPY --from=builder /app/tmp/gitb-ui/gitb-ui /usr/local/gitb-ui

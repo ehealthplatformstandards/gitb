@@ -40,7 +40,7 @@ In subsequent sections these components are referred to using their Docker image
 > **Note**
 > 
 > This repository is used to build the Test Bed's software components from their source. The simplest approach
-> to use the Test Bed is via its **published Docker images** ([gitb-ui](https://hub.docker.com/r/isaitb/gitb-ui) and [gitb-srv](https://hub.docker.com/r/isaitb/gitb-srv)) following
+> to use the Test Bed is via its **published Docker images** ([gitb-ui](https://hub.docker.com/r/ehealthplatformstandards/gitb-ui) and [gitb-srv](https://hub.docker.com/r/ehealthplatformstandards/gitb-srv)) following
 > our [installation guide](https://www.itb.ec.europa.eu/docs/guides/latest/installingTheTestBed/index.html).
 > 
 > Alternatively, you may build and launch the Docker service directly from its sources. See [here](#build-for-deployment) for details.
@@ -95,13 +95,13 @@ Although not mandatory, the proposed IDE to use is IntelliJ, and VS Code for ``g
 
 The focus of this README file is the ``gitb-srv`` and ``gitb-ui`` components. To run a complete Test Bed instance
 you will also require at least:
-- A MySQL database (version 8+) for its persistence.
+- A PostgreSQL database (version 16+) for its persistence.
 - A REDIS instance (version 7+) for the caching of user sessions.
 
 Both these instances are set up separately (e.g. via Docker) environment. These can be set up from Docker
 as follows:
-- MySQL: ``docker run --name gitb-mysql -p 3306:3306 -d isaitb/gitb-mysql``
-- REDIS: ``docker run --name gitb-redis -p 6379:6379 -d isaitb/gitb-redis``
+- PostgreSQL: ``docker run --name gitb-postgres -p 3306:3306 -d ehealthplatformstandards/gitb-postgresql``
+- REDIS: ``docker run --name gitb-redis -p 6379:6379 -d ehealthplatformstandards/gitb-redis``
 
 > **Note**  
 > All images and containers are defined in ``docker-compose.yml`` and explained in detail the [developer installation guide](https://www.itb.ec.europa.eu/docs/guides/latest/installingTheTestBed/index.html). You may build and launch the complete service as described [here](#build-for-deployment).
@@ -190,22 +190,22 @@ to build Docker images.
 
 1. From the current (root) folder issue ``mvn clean install -DskipTests=true -Denv=docker``
 2. Copy file ``gitb-testbed-service/target/itbsrv.war`` to a separate folder to build its Docker image.
-3. Use Dockerfile ``etc/docker/gitb-srv/Dockerfile`` from the same folder to build the image with `docker build -t isaitb/gitb-srv .`.
+3. Use Dockerfile ``etc/docker/gitb-srv/Dockerfile`` from the same folder to build the image with `docker build -t ehealthplatformstandards/gitb-srv .`.
 
 ### Frontend (gitb-ui)
 
 1. From the ``gitb-ui`` folder issue ``sbt clean dist``. This builds all Play code and automatically calls the required
    prod build target from its Angular app.
 2. Unzip the contents of the ``gitb-ui/target/universal/gitb-1.0-SNAPSHOT.zip`` archive to a separate folder. The name of the resulting unzipped folder should be ``gitb-ui``.
-3. Use the Dockerfile ``etc/docker/gitb-ui/Dockerfile`` from the same folder to build the image with `docker build -t isaitb/gitb-ui .`.
+3. Use the Dockerfile ``etc/docker/gitb-ui/Dockerfile`` from the same folder to build the image with `docker build -t ehealthplatformstandards/gitb-ui .`.
 
-### Database (gitb-mysql)
+### Database (gitb-postgresql)
 
-1. From the `etc/docker/gitb-mysql` folder build the image with `docker build -t isaitb/gitb-mysql .`
+1. From the `etc/docker/gitb-postgresql` folder build the image with `docker build -t ehealthplatformstandards/gitb-postgresql .`
 
 ### Session cache (gitb-redis)
 
-1. From the `etc/docker/gitb-redis` folder build the image with `docker build -t isaitb/gitb-redis .`
+1. From the `etc/docker/gitb-redis` folder build the image with `docker build -t ehealthplatformstandards/gitb-redis .`
 
 ### Create the overall service
 

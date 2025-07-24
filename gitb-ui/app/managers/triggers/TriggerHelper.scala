@@ -24,7 +24,7 @@ import org.apache.pekko.actor.ActorSystem
 import persistence.db.PersistenceSchema
 import play.api.db.slick.DatabaseConfigProvider
 import slick.dbio.DBIO
-import slick.jdbc.MySQLProfile.api._
+import slick.jdbc.PostgresProfile.api._
 
 import javax.inject.{Inject, Singleton}
 import scala.collection.mutable.ListBuffer

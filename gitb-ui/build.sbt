@@ -33,7 +33,7 @@ libraryDependencies ++= Seq(
   "com.gitb" % "gitb-reports" % gitbCommonsVersion exclude("eu.europa.ec.itb", "gitb-types-jakarta") exclude("eu.europa.ec.itb", "gitb-types-specs"),
   "com.gitb" % "gitb-validator-tdl" % gitbCommonsVersion exclude("eu.europa.ec.itb", "gitb-types-jakarta") exclude("eu.europa.ec.itb", "gitb-types-specs"),
   "com.gitb" % "gitb-xml-resources" % gitbCommonsVersion exclude("eu.europa.ec.itb", "gitb-types-jakarta") exclude("eu.europa.ec.itb", "gitb-types-specs"),
-  "com.mysql" % "mysql-connector-j" % "9.2.0" exclude("com.google.protobuf", "protobuf-java"), // Exclude protobuf as we don't need the X DevAPI.
+  "org.postgresql" % "postgresql" % "42.7.3",
   "org.apache.pekko" %% "pekko-actor" % pekkoVersion,
   "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion,
   "org.apache.pekko" %% "pekko-remote" % pekkoVersion,
@@ -74,7 +74,7 @@ libraryDependencies ++= Seq(
   "org.jasypt" % "jasypt" % "1.9.3",
   "org.apache.httpcomponents" % "httpclient" % "4.5.14",
   "org.flywaydb" %% "flyway-play" % "9.1.0",
-  "org.flywaydb" % "flyway-mysql" % "11.7.2",
+  "org.flywaydb" % "flyway-database-postgresql" % "11.7.2",
   "com.googlecode.owasp-java-html-sanitizer" % "owasp-java-html-sanitizer" % "20240325.1",
   "net.lingala.zip4j" % "zip4j" % "2.11.5",
   "org.apache.commons" % "commons-text" % commonsTextVersion

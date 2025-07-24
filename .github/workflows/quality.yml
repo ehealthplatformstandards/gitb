@@ -85,8 +85,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=isaitb
-            -Dsonar.projectKey=ISAITB_gitb
+            -Dsonar.organization=ehealthplatformstandards
+            -Dsonar.projectKey=ehealthplatformstandards_gitb
             -Dsonar.sources=.
             -Dsonar.inclusions=**/*.java,**/*.scala,**/*.ts,**/*.js
             -Dsonar.exclusions=**/test/**,**/src/test/**,**/node_modules/**,**/dist/**,**/target/generated-sources/**

@@ -7,14 +7,14 @@ services:
       build:
         context: ./etc/docker/gitb-redis
       restart: unless-stopped
-   gitb-mysql:
+   gitb-postgresql:
       build:
-        context: ./etc/docker/gitb-mysql
+        context: etc/docker/gitb-postgresql
       restart: unless-stopped
       volumes:
-       - gitb-dbdata:/var/lib/mysql
+       - gitb-dbdata:/var/lib/postgresql/data
       healthcheck:
-       test: "/usr/bin/mysql --user=root --password=$$MYSQL_ROOT_PASSWORD --execute \"SHOW DATABASES;\""
+       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
        interval: 3s
        retries: 10
    gitb-srv:
@@ -38,7 +38,7 @@ services:
       depends_on:
        gitb-redis:
          condition: service_started
-       gitb-mysql:
+       gitb-postgresql:
          condition: service_healthy
        gitb-srv:
          condition: service_started 

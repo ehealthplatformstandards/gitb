@@ -46,28 +46,37 @@ object PersistenceLayer {
     try {
       // Create database if not exists (connection using root URL)
       Using.resource(DriverManager.getConnection(Configurations.DB_ROOT_URL, Configurations.DB_USER, Configurations.DB_PASSWORD)) { connection =>
-        Using.resource(connection.createStatement()) { statement =>
-          statement.execute("CREATE DATABASE IF NOT EXISTS " + Configurations.DB_NAME + " DEFAULT CHARACTER SET UTF8")
+        var exists = false
+        Using.resource(connection.prepareStatement("SELECT 1 FROM pg_database WHERE datname = ?")) { statement =>
+          statement.setString(1, Configurations.DB_NAME)
+          Using.resource(statement.executeQuery()) { rs =>
+            exists = rs.next()
+          }
+        }
+
+        if (!exists) {
+          val createDbSQL = s"CREATE DATABASE ${Configurations.DB_NAME} ENCODING 'UTF8'"
+          Using.resource(connection.createStatement()) { stmt =>
+            stmt.executeUpdate(createDbSQL)
+          }
         }
       }
+
+      // Initialize the DB if Baseline-Script available
       if (Configurations.DB_LATEST_DB_BASELINE_SCRIPT.isDefined) {
-        // Run the latest baseline script to avoid running individual Flyway migrations (connect to gitb schema)
         Using.resource(DriverManager.getConnection(Configurations.DB_JDBC_URL, Configurations.DB_USER, Configurations.DB_PASSWORD)) { connection =>
           connection.setAutoCommit(true)
           var count = 0
-          Using.resource(connection.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE LOWER(table_schema) = LOWER(?) AND LOWER(table_name) = LOWER(?) LIMIT 1;")) { statement =>
-            statement.setString(1, Configurations.DB_NAME)
-            statement.setString(2, Configurations.DB_MIGRATION_TABLE)
+          Using.resource(connection.prepareStatement(
+            s"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = LOWER(?)"
+          )) { statement =>
+            statement.setString(1, Configurations.DB_MIGRATION_TABLE)
             Using.resource(statement.executeQuery()) { resultSet =>
-              while (resultSet.next()) {
-                count = resultSet.getInt(1)
-              }
+              if (resultSet.next()) count = resultSet.getInt(1)
             }
           }
           if (count == 0) {
-            // There is no schema version table. Find the latest baseline script and apply it.
             logger.info("Initialising database using baseline script {}...", Configurations.DB_LATEST_DB_BASELINE_SCRIPT.get)
-            // This is a very simple implementation to split the SQL file into statements. If the file includes ";" at any other point besides as a statement separator, this should be adapted.
             getBaseLineScriptStatements().foreach { statementContent =>
               Using.resource(connection.createStatement()) { statement =>
                 statement.execute(statementContent)
@@ -80,7 +89,7 @@ object PersistenceLayer {
         }
       }
     } catch {
-      case e: Exception  =>
+      case e: Exception =>
         logger.error("DB initialisation error", e)
         throw new IllegalStateException(e)
     }
