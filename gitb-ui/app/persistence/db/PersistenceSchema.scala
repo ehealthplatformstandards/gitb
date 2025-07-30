@@ -19,7 +19,7 @@ import models._
 import models.snapshot._
 import models.theme.Theme
 import slick.collection.heterogeneous.HNil
-import slick.jdbc.MySQLProfile.api._
+import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
 

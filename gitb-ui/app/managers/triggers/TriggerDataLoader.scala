@@ -18,7 +18,7 @@ package managers.triggers
 import managers.BaseManager
 import persistence.db.PersistenceSchema
 import play.api.db.slick.DatabaseConfigProvider
-import slick.jdbc.MySQLProfile.api._
+import slick.jdbc.PostgresProfile.api._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
