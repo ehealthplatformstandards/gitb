@@ -1,1 +1,0 @@
-ALTER TABLE `testresultdefinitions` MODIFY `tpl` MEDIUMBLOB NOT NULL;

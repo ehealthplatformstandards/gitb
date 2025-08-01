@@ -1,1 +1,0 @@
-ALTER TABLE `communities` ADD COLUMN `allow_automation_api` TINYINT DEFAULT 0 NOT NULL;

@@ -1,1 +1,0 @@
-DROP INDEX `actors_aid_unq_idx` ON `actors`;

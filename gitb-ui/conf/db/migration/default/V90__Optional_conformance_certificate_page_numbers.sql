@@ -1,1 +1,0 @@
-ALTER TABLE `conformancecertificates` ADD COLUMN `include_page_numbers` TINYINT DEFAULT 1 NOT NULL;

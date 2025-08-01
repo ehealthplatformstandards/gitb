@@ -29,7 +29,7 @@ object PersistenceSchema {
    *** Primary Tables ***
    **********************/
 
-  class CommunitiesTable(tag: Tag) extends Table[Communities](tag, "Communities") {
+  class CommunitiesTable(tag: Tag) extends Table[Communities](tag, "communities") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -59,7 +59,7 @@ object PersistenceSchema {
   val communities = TableQuery[CommunitiesTable]
   val insertCommunity = communities returning communities.map(_.id)
 
-  class OrganizationsTable(tag: Tag) extends Table[Organizations](tag, "Organizations") {
+  class OrganizationsTable(tag: Tag) extends Table[Organizations](tag, "organizations") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -80,7 +80,7 @@ object PersistenceSchema {
   //insert organizations by insertOrganization += organization. This is implemented to get auto-incremented ids
   val insertOrganization = organizations returning organizations.map(_.id)
 
-  class UsersTable(tag: Tag) extends Table[Users](tag, "Users") {
+  class UsersTable(tag: Tag) extends Table[Users](tag, "users") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def email = column[String]("email")
@@ -96,7 +96,7 @@ object PersistenceSchema {
   val users = TableQuery[UsersTable]
   val insertUser = users returning users.map(_.id)
 
-  class SystemsTable(tag: Tag) extends Table[Systems](tag, "Systems") {
+  class SystemsTable(tag: Tag) extends Table[Systems](tag, "systems") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -110,7 +110,7 @@ object PersistenceSchema {
   val systems = TableQuery[SystemsTable]
   val insertSystem = systems returning systems.map(_.id)
 
-  class DomainsTable(tag: Tag) extends Table[Domain](tag, "Domains") {
+  class DomainsTable(tag: Tag) extends Table[Domain](tag, "domains") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -121,7 +121,7 @@ object PersistenceSchema {
   }
   val domains = TableQuery[DomainsTable]
 
-  class SpecificationsTable(tag: Tag) extends Table[Specifications](tag, "Specifications") {
+  class SpecificationsTable(tag: Tag) extends Table[Specifications](tag, "specifications") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -137,7 +137,7 @@ object PersistenceSchema {
   val specifications = TableQuery[SpecificationsTable]
   val insertSpecification = specifications returning specifications.map(_.id)
 
-  class ActorsTable(tag: Tag) extends Table[Actors](tag, "Actors") {
+  class ActorsTable(tag: Tag) extends Table[Actors](tag, "actors") {
     def id      = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def actorId = column[String]("actorId")
     def name    = column[String]("name")
@@ -153,7 +153,7 @@ object PersistenceSchema {
   val actors = TableQuery[ActorsTable]
   val insertActor = actors returning actors.map(_.id)
 
-  class EndpointsTable(tag: Tag) extends Table[Endpoints](tag, "Endpoints") {
+  class EndpointsTable(tag: Tag) extends Table[Endpoints](tag, "endpoints") {
 	  def id    = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name  = column[String]("name")
     def desc  = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -163,7 +163,7 @@ object PersistenceSchema {
   val endpoints = TableQuery[EndpointsTable]
   val insertEndpoint = endpoints returning endpoints.map(_.id)
 
-	class ParametersTable(tag: Tag) extends Table[models.Parameters] (tag, "Parameters") {
+	class ParametersTable(tag: Tag) extends Table[models.Parameters] (tag, "parameters") {
 		def id    = column[Long]("id", O.PrimaryKey, O.AutoInc)
 		def name  = column[String]("name")
     def testKey = column[String]("test_key")
@@ -185,12 +185,12 @@ object PersistenceSchema {
 	val parameters = TableQuery[ParametersTable]
   val insertParameter = parameters returning parameters.map(_.id)
 
-  class DomainParametersTable(tag: Tag) extends Table[models.DomainParameter] (tag, "DomainParameters") {
+  class DomainParametersTable(tag: Tag) extends Table[models.DomainParameter] (tag, "domainparameters") {
     def id    = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name  = column[String]("name")
     def desc  = column[Option[String]]("description", O.SqlType("TEXT"))
     def kind  = column[String]("kind")
-    def value = column[Option[String]]("value", O.SqlType("MEDIUMBLOB"))
+    def value = column[Option[String]]("value", O.SqlType("TEXT"))
     def inTests = column[Boolean]("in_tests")
     def contentType  = column[Option[String]]("content_type")
     def domain = column[Long]("domain")
@@ -198,7 +198,7 @@ object PersistenceSchema {
   }
   val domainParameters = TableQuery[DomainParametersTable]
 
-  class ConformanceResultsTable(tag: Tag) extends Table[models.ConformanceResult] (tag, "ConformanceResults") {
+  class ConformanceResultsTable(tag: Tag) extends Table[models.ConformanceResult] (tag, "conformanceresults") {
     def id    = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def sut  = column[Long]("sut_id")
     def spec  = column[Long]("spec_id")
@@ -213,18 +213,18 @@ object PersistenceSchema {
   }
   val conformanceResults = TableQuery[ConformanceResultsTable]
 
-  class ConfigurationsTable(tag:Tag) extends Table[Configs] (tag, "Configurations") {
+  class ConfigurationsTable(tag:Tag) extends Table[Configs] (tag, "configurations") {
     def system = column[Long] ("system")
 	  def parameter = column[Long]("parameter")
 	  def endpoint = column[Long] ("endpoint")
-	  def value = column[String]("value", O.SqlType("MEDIUMBLOB"))
+	  def value = column[String]("value", O.SqlType("TEXT"))
     def contentType  = column[Option[String]]("content_type")
     def * = (system, parameter, endpoint, value, contentType) <> (Configs.tupled, Configs.unapply)
     def pk = primaryKey("c_pk", (system, parameter, endpoint))
   }
   val configs = TableQuery[ConfigurationsTable]
 
-  class TransactionsTable(tag: Tag) extends Table[Transaction](tag, "Transactions") {
+  class TransactionsTable(tag: Tag) extends Table[Transaction](tag, "transactions") {
     def shortname = column[String]("sname", O.PrimaryKey)
     def fullname = column[String]("fname")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -233,7 +233,7 @@ object PersistenceSchema {
   }
   val transactions = TableQuery[TransactionsTable]
 
-  class OptionsTable(tag: Tag) extends Table[Options](tag, "Options") {
+  class OptionsTable(tag: Tag) extends Table[Options](tag, "options") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -243,7 +243,7 @@ object PersistenceSchema {
   }
   val options = TableQuery[OptionsTable]
 
-  class TestCaseGroupsTable(tag: Tag) extends Table[TestCaseGroup](tag, "TestCaseGroups") {
+  class TestCaseGroupsTable(tag: Tag) extends Table[TestCaseGroup](tag, "testcasegroups") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def identifier = column[String]("identifier")
     def name    = column[Option[String]]("name")
@@ -253,7 +253,7 @@ object PersistenceSchema {
   }
   val testCaseGroups = TableQuery[TestCaseGroupsTable]
 
-  class TestCasesTable(tag: Tag) extends Table[TestCases](tag, "TestCases") {
+  class TestCasesTable(tag: Tag) extends Table[TestCases](tag, "testcases") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def identifier = column[String]("identifier")
     def shortname = column[String]("sname")
@@ -282,7 +282,7 @@ object PersistenceSchema {
   }
   val testCases = TableQuery[TestCasesTable]
 
-	class TestSuitesTable(tag: Tag) extends Table[TestSuites](tag, "TestSuites") {
+	class TestSuitesTable(tag: Tag) extends Table[TestSuites](tag, "testsuites") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def identifier = column[String]("identifier")
 		def shortname = column[String]("sname")
@@ -307,7 +307,7 @@ object PersistenceSchema {
 	}
 	val testSuites = TableQuery[TestSuitesTable]
 
-  class TestResultsTable(tag: Tag) extends Table[TestResult](tag, "TestResults") {
+  class TestResultsTable(tag: Tag) extends Table[TestResult](tag, "testresults") {
     def testSessionId = column[String]("test_session_id", O.PrimaryKey)
 	  def sutId = column[Option[Long]]("sut_id")
     def sut = column[Option[String]]("sut")
@@ -333,14 +333,14 @@ object PersistenceSchema {
   }
   val testResults = TableQuery[TestResultsTable]
 
-  class TestResultDefinitionsTable(tag: Tag) extends Table[TestResultDefinition](tag, "TestResultDefinitions") {
+  class TestResultDefinitionsTable(tag: Tag) extends Table[TestResultDefinition](tag, "testresultdefinitions") {
     def testSessionId = column[String]("test_session_id", O.PrimaryKey)
-    def tpl = column[String]("tpl", O.SqlType("MEDIUMBLOB"))
+    def tpl = column[String]("tpl", O.SqlType("TEXT"))
     def * = (testSessionId, tpl) <> (TestResultDefinition.tupled, TestResultDefinition.unapply)
   }
   val testResultDefinitions = TableQuery[TestResultDefinitionsTable]
 
-  class TestStepReports(tag: Tag) extends Table[TestStepResult](tag, "TestStepReports") {
+  class TestStepReports(tag: Tag) extends Table[TestStepResult](tag, "teststepreports") {
 		def testSessionId = column[String]("test_session_id")
 		def testStepId = column[String]("test_step_id")
 		def result = column[Short]("result")
@@ -352,7 +352,7 @@ object PersistenceSchema {
 	}
 	val testStepReports = TableQuery[TestStepReports]
 
-  class TestInteractionsTable(tag: Tag) extends Table[TestInteraction](tag, "TestInteractions") {
+  class TestInteractionsTable(tag: Tag) extends Table[TestInteraction](tag, "testinteractions") {
     def testSessionId = column[String]("test_session_id")
     def testStepId = column[String]("test_step_id")
     def admin = column[Boolean]("is_admin")
@@ -367,7 +367,7 @@ object PersistenceSchema {
    *** Relational Tables ***
    *************************/
 
-  class SystemHasAdminsTable(tag: Tag) extends Table[(Long, Long)](tag, "SystemHasAdmins") {
+  class SystemHasAdminsTable(tag: Tag) extends Table[(Long, Long)](tag, "systemhasadmins") {
     def systemId = column[Long]("sut_id")
     def userId = column[Long]("user_id")
     def * = (systemId, userId)
@@ -375,7 +375,7 @@ object PersistenceSchema {
   }
   val systemHasAdmins = TableQuery[SystemHasAdminsTable]
 
-  class SystemImplementsActors(tag: Tag) extends Table[(Long, Long, Long)] (tag, "SystemImplementsActors") {
+  class SystemImplementsActors(tag: Tag) extends Table[(Long, Long, Long)] (tag, "systemimplementsactors") {
     def systemId = column[Long]("sut_id")
     def specId = column[Long]("spec_id")
     def actorId = column[Long]("actor_id")
@@ -384,7 +384,7 @@ object PersistenceSchema {
   }
   val systemImplementsActors = TableQuery[SystemImplementsActors]
 
-	class SystemImplementsOptions(tag: Tag) extends Table[(Long, Long)] (tag, "SystemImplementsOptions") {
+	class SystemImplementsOptions(tag: Tag) extends Table[(Long, Long)] (tag, "systemimplementsoptions") {
 		def systemId = column[Long]("sut_id")
 		def optionId = column[Long]("option_id")
 
@@ -393,7 +393,7 @@ object PersistenceSchema {
 	}
 	val systemImplementsOptions = TableQuery[SystemImplementsOptions]
 
-  class SpecificationHasActorsTable(tag: Tag) extends Table[(Long, Long)](tag, "SpecificationHasActors") {
+  class SpecificationHasActorsTable(tag: Tag) extends Table[(Long, Long)](tag, "specificationhasactors") {
     def specId = column[Long]("spec_id")
     def actorId = column[Long]("actor_id")
     def * = (specId, actorId)
@@ -401,7 +401,7 @@ object PersistenceSchema {
   }
   val specificationHasActors = TableQuery[SpecificationHasActorsTable]
 
-  class SpecificationHasTestSuitesTable(tag: Tag) extends Table[(Long, Long)](tag, "SpecificationHasTestSuites") {
+  class SpecificationHasTestSuitesTable(tag: Tag) extends Table[(Long, Long)](tag, "specificationhastestsuites") {
     def specId = column[Long]("spec")
     def testSuiteId = column[Long]("testsuite")
     def * = (specId, testSuiteId)
@@ -409,7 +409,7 @@ object PersistenceSchema {
   }
   val specificationHasTestSuites = TableQuery[SpecificationHasTestSuitesTable]
 
-  class EndpointSupportsTransactionsTable(tag: Tag) extends Table[(Long, String, String)](tag, "EndpointSupportsTransactions") {
+  class EndpointSupportsTransactionsTable(tag: Tag) extends Table[(Long, String, String)](tag, "endpointsupportstransactions") {
     def actorId = column[Long]("actor")
     def endpoint = column[String]("endpoint")
     def transaction = column[String]("transaction")
@@ -418,7 +418,7 @@ object PersistenceSchema {
   }
   val endpointSupportsTransactions = TableQuery[EndpointSupportsTransactionsTable]
 
-	class TestCaseHasActorsTable(tag: Tag) extends Table[(Long, Long, Long, Boolean)](tag, "TestCaseHasActors") {
+	class TestCaseHasActorsTable(tag: Tag) extends Table[(Long, Long, Long, Boolean)](tag, "testcasehasactors") {
 		def testcase = column[Long]("testcase")
     def specification = column[Long] ("specification")
 		def actor = column[Long]("actor")
@@ -430,7 +430,7 @@ object PersistenceSchema {
 	}
 	val testCaseHasActors = TableQuery[TestCaseHasActorsTable]
 
-	class TestSuiteHasActorsTable(tag: Tag) extends Table[(Long, Long)](tag, "TestSuiteHasActors") {
+	class TestSuiteHasActorsTable(tag: Tag) extends Table[(Long, Long)](tag, "testsuitehasactors") {
 		def testsuite = column[Long]("testsuite")
 		def actor = column[Long]("actor")
 
@@ -440,7 +440,7 @@ object PersistenceSchema {
 	}
 	val testSuiteHasActors = TableQuery[TestSuiteHasActorsTable]
 
-	class TestSuiteHasTestCasesTable(tag: Tag) extends Table[(Long, Long)](tag, "TestSuiteHasTestCases") {
+	class TestSuiteHasTestCasesTable(tag: Tag) extends Table[(Long, Long)](tag, "testsuitehastestcases") {
 		def testsuite = column[Long]("testsuite")
 		def testcase = column[Long]("testcase")
 
@@ -450,7 +450,7 @@ object PersistenceSchema {
 	}
 	val testSuiteHasTestCases = TableQuery[TestSuiteHasTestCasesTable]
 
-  class TestCaseCoversOptionsTable(tag: Tag) extends Table[(Long, Long)](tag, "TestCaseCoversOptions") {
+  class TestCaseCoversOptionsTable(tag: Tag) extends Table[(Long, Long)](tag, "testcasecoversoptions") {
     def testcase = column[Long]("testcase")
     def option = column[Long]("option")
     def * =  (testcase, option)
@@ -458,7 +458,7 @@ object PersistenceSchema {
   }
   val testCaseCoversOptions = TableQuery[TestCaseCoversOptionsTable]
 
-  class LandingPagesTable(tag: Tag) extends Table[LandingPages](tag, "LandingPages") {
+  class LandingPagesTable(tag: Tag) extends Table[LandingPages](tag, "landingpages") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -470,7 +470,7 @@ object PersistenceSchema {
   val landingPages = TableQuery[LandingPagesTable]
   val insertLandingPage = landingPages returning landingPages.map(_.id)
 
-  class SystemConfigurationsTable(tag: Tag) extends Table[SystemConfigurations](tag, "SystemConfigurations") {
+  class SystemConfigurationsTable(tag: Tag) extends Table[SystemConfigurations](tag, "systemconfigurations") {
     def name = column[String]("name", O.PrimaryKey)
     def parameter = column[Option[String]]("parameter", O.SqlType("TEXT"))
     def description = column[Option[String]]("description")
@@ -478,7 +478,7 @@ object PersistenceSchema {
   }
   val systemConfigurations = TableQuery[SystemConfigurationsTable]
 
-  class LegalNoticesTable(tag: Tag) extends Table[LegalNotices](tag, "LegalNotices") {
+  class LegalNoticesTable(tag: Tag) extends Table[LegalNotices](tag, "legalnotices") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -490,7 +490,7 @@ object PersistenceSchema {
   val legalNotices = TableQuery[LegalNoticesTable]
   val insertLegalNotice = legalNotices returning legalNotices.map(_.id)
 
-  class ErrorTemplatesTable(tag: Tag) extends Table[ErrorTemplates](tag, "ErrorTemplates") {
+  class ErrorTemplatesTable(tag: Tag) extends Table[ErrorTemplates](tag, "errortemplates") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -502,7 +502,7 @@ object PersistenceSchema {
   val errorTemplates = TableQuery[ErrorTemplatesTable]
   val insertErrorTemplate = errorTemplates returning errorTemplates.map(_.id)
 
-  class CommunityReportSettingsTable(tag: Tag) extends Table[CommunityReportSettings](tag, "CommunityReportSettings") {
+  class CommunityReportSettingsTable(tag: Tag) extends Table[CommunityReportSettings](tag, "communityreportsettings") {
     def reportType = column[Short]("report_type")
     def signPdfs = column[Boolean]("sign_pdf")
     def customPdfs = column[Boolean]("custom_pdf")
@@ -513,7 +513,7 @@ object PersistenceSchema {
   }
   val communityReportSettings = TableQuery[CommunityReportSettingsTable]
 
-  class ConformanceCertificatesTable(tag: Tag) extends Table[ConformanceCertificate](tag, "ConformanceCertificates") {
+  class ConformanceCertificatesTable(tag: Tag) extends Table[ConformanceCertificate](tag, "conformancecertificates") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def title = column[Option[String]]("title", O.SqlType("TEXT"))
     def message = column[Option[String]]("message", O.SqlType("TEXT"))
@@ -530,9 +530,9 @@ object PersistenceSchema {
   val conformanceCertificates = TableQuery[ConformanceCertificatesTable]
   val insertConformanceCertificate = conformanceCertificates returning conformanceCertificates.map(_.id)
 
-  class CommunityKeystoresTable(tag: Tag) extends Table[CommunityKeystore](tag, "CommunityKeystores") {
+  class CommunityKeystoresTable(tag: Tag) extends Table[CommunityKeystore](tag, "communitykeystores") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def keystoreFile = column[String]("keystore_file", O.SqlType("MEDIUMBLOB"))
+    def keystoreFile = column[String]("keystore_file", O.SqlType("TEXT"))
     def keystoreType = column[String]("keystore_type", O.SqlType("TEXT"))
     def keystorePassword = column[String]("keystore_pass", O.SqlType("TEXT"))
     def keyPassword = column[String]("key_pass", O.SqlType("TEXT"))
@@ -542,7 +542,7 @@ object PersistenceSchema {
   val communityKeystores = TableQuery[CommunityKeystoresTable]
   val insertCommunityKeystore = communityKeystores returning communityKeystores.map(_.id)
 
-  class ConformanceOverviewCertificatesTable(tag: Tag) extends Table[ConformanceOverviewCertificate](tag, "ConformanceOverviewCertificates") {
+  class ConformanceOverviewCertificatesTable(tag: Tag) extends Table[ConformanceOverviewCertificate](tag, "conformanceoverviewcertificates") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def title = column[Option[String]]("title", O.SqlType("TEXT"))
     def includeTitle = column[Boolean]("include_title")
@@ -563,7 +563,7 @@ object PersistenceSchema {
   val conformanceOverviewCertificates = TableQuery[ConformanceOverviewCertificatesTable]
   val insertConformanceOverviewCertificate = conformanceOverviewCertificates returning conformanceOverviewCertificates.map(_.id)
 
-  class ConformanceOverviewCertificateMessagesTable(tag: Tag) extends Table[ConformanceOverviewCertificateMessage](tag, "ConformanceOverviewCertificateMessages") {
+  class ConformanceOverviewCertificateMessagesTable(tag: Tag) extends Table[ConformanceOverviewCertificateMessage](tag, "conformanceoverviewcertificatemessages") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def message = column[String]("message", O.SqlType("TEXT"))
     def messageType = column[Short]("message_type")
@@ -577,7 +577,7 @@ object PersistenceSchema {
   val conformanceOverviewCertificateMessages = TableQuery[ConformanceOverviewCertificateMessagesTable]
   val insertConformanceOverviewCertificateMessage = conformanceOverviewCertificateMessages returning conformanceOverviewCertificateMessages.map(_.id)
 
-  class OrganisationParametersTable(tag: Tag) extends Table[OrganisationParameters](tag, "OrganisationParameters") {
+  class OrganisationParametersTable(tag: Tag) extends Table[OrganisationParameters](tag, "organisationparameters") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def testKey = column[String]("test_key")
@@ -600,7 +600,7 @@ object PersistenceSchema {
   val organisationParameters = TableQuery[OrganisationParametersTable]
   val insertOrganisationParameters = organisationParameters returning organisationParameters.map(_.id)
 
-  class SystemParametersTable(tag: Tag) extends Table[SystemParameters](tag, "SystemParameters") {
+  class SystemParametersTable(tag: Tag) extends Table[SystemParameters](tag, "systemparameters") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def testKey = column[String]("test_key")
@@ -622,27 +622,27 @@ object PersistenceSchema {
   val systemParameters = TableQuery[SystemParametersTable]
   val insertSystemParameters = systemParameters returning systemParameters.map(_.id)
 
-  class OrganisationParameterValuesTable(tag: Tag) extends Table[OrganisationParameterValues](tag, "OrganisationParameterValues") {
+  class OrganisationParameterValuesTable(tag: Tag) extends Table[OrganisationParameterValues](tag, "organisationparametervalues") {
     def organisation = column[Long] ("organisation")
     def parameter = column[Long]("parameter")
-    def value = column[String]("value", O.SqlType("MEDIUMBLOB"))
+    def value = column[String]("value", O.SqlType("TEXT"))
     def contentType  = column[Option[String]]("content_type")
     def * = (organisation, parameter, value, contentType) <> (OrganisationParameterValues.tupled, OrganisationParameterValues.unapply)
     def pk = primaryKey("opv_pk", (organisation, parameter))
   }
   val organisationParameterValues = TableQuery[OrganisationParameterValuesTable]
 
-  class SystemParameterValuesTable(tag: Tag) extends Table[SystemParameterValues](tag, "SystemParameterValues") {
+  class SystemParameterValuesTable(tag: Tag) extends Table[SystemParameterValues](tag, "systemparametervalues") {
     def system = column[Long] ("system")
     def parameter = column[Long]("parameter")
-    def value = column[String]("value", O.SqlType("MEDIUMBLOB"))
+    def value = column[String]("value", O.SqlType("TEXT"))
     def contentType  = column[Option[String]]("content_type")
     def * = (system, parameter, value, contentType) <> (SystemParameterValues.tupled, SystemParameterValues.unapply)
     def pk = primaryKey("spv_pk", (system, parameter))
   }
   val systemParameterValues = TableQuery[SystemParameterValuesTable]
 
-  class CommunityLabelsTable(tag: Tag) extends Table[CommunityLabels](tag, "CommunityLabels") {
+  class CommunityLabelsTable(tag: Tag) extends Table[CommunityLabels](tag, "communitylabels") {
     def community = column[Long] ("community")
     def labelType = column[Short]("label_type")
     def singularForm = column[String]("singular_form")
@@ -653,7 +653,7 @@ object PersistenceSchema {
   }
   val communityLabels = TableQuery[CommunityLabelsTable]
 
-  class TriggersTable(tag: Tag) extends Table[Triggers](tag, "Triggers") {
+  class TriggersTable(tag: Tag) extends Table[Triggers](tag, "triggers") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -666,21 +666,20 @@ object PersistenceSchema {
     def latestResultOutput = column[Option[String]]("latest_result_output", O.SqlType("TEXT"))
     def community = column[Long] ("community")
     def * = (id, name, description, url, eventType, serviceType, operation, active, latestResultOk, latestResultOutput, community) <> (Triggers.tupled, Triggers.unapply)
-    def pk = primaryKey("triggers_pk", id)
   }
   val triggers = TableQuery[TriggersTable]
   val insertTriggers = triggers returning triggers.map(_.id)
 
-  class TriggerDataTable(tag: Tag) extends Table[TriggerData](tag, "TriggerData") {
+  class TriggerDataTable(tag: Tag) extends Table[TriggerData](tag, "triggerdata") {
     def dataType = column[Short]("data_type")
     def dataId = column[Long]("data_id")
     def trigger = column[Long] ("trigger")
     def * = (dataType, dataId, trigger) <> (TriggerData.tupled, TriggerData.unapply)
-    def pk = primaryKey("cl_pk", (dataType, dataId, trigger))
+    def pk = primaryKey("td_pk", (dataType, dataId, trigger))
   }
   val triggerData = TableQuery[TriggerDataTable]
 
-  class TriggerFireExpressionsTable(tag: Tag) extends Table[TriggerFireExpression](tag, "TriggerFireExpressions") {
+  class TriggerFireExpressionsTable(tag: Tag) extends Table[TriggerFireExpression](tag, "triggerfireexpressions") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def expression = column[String]("expression")
     def expressionType = column[Short]("expression_type")
@@ -690,7 +689,7 @@ object PersistenceSchema {
   }
   val triggerFireExpressions = TableQuery[TriggerFireExpressionsTable]
 
-  class CommunityResourcesTable(tag: Tag) extends Table[CommunityResources](tag, "CommunityResources") {
+  class CommunityResourcesTable(tag: Tag) extends Table[CommunityResources](tag, "communityresources") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -700,7 +699,7 @@ object PersistenceSchema {
   val communityResources = TableQuery[CommunityResourcesTable]
   val insertCommunityResources = communityResources returning communityResources.map(_.id)
 
-  class SpecificationGroupsTable(tag: Tag) extends Table[SpecificationGroups](tag, "SpecificationGroups") {
+  class SpecificationGroupsTable(tag: Tag) extends Table[SpecificationGroups](tag, "specificationgroups") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -714,7 +713,7 @@ object PersistenceSchema {
   val specificationGroups = TableQuery[SpecificationGroupsTable]
   val insertSpecificationGroups = specificationGroups returning specificationGroups.map(_.id)
 
-  class ConformanceSnapshotsTable(tag: Tag) extends Table[ConformanceSnapshot](tag, "ConformanceSnapshots") {
+  class ConformanceSnapshotsTable(tag: Tag) extends Table[ConformanceSnapshot](tag, "conformancesnapshots") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def label = column[String]("label")
     def publicLabel = column[Option[String]]("public_label")
@@ -727,7 +726,7 @@ object PersistenceSchema {
   val conformanceSnapshots = TableQuery[ConformanceSnapshotsTable]
   val insertConformanceSnapshot = conformanceSnapshots returning conformanceSnapshots.map(_.id)
 
-  class ConformanceSnapshotResultsTable(tag: Tag) extends Table[ConformanceSnapshotResult](tag, "ConformanceSnapshotResults") {
+  class ConformanceSnapshotResultsTable(tag: Tag) extends Table[ConformanceSnapshotResult](tag, "conformancesnapshotresults") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def organisationId = column[Long] ("organization_id")
     def systemId = column[Long]("sut_id")
@@ -748,7 +747,7 @@ object PersistenceSchema {
   val conformanceSnapshotResults = TableQuery[ConformanceSnapshotResultsTable]
   val insertConformanceSnapshotResult = conformanceSnapshotResults returning conformanceSnapshotResults.map(_.id)
 
-  class ConformanceSnapshotTestCasesTable(tag: Tag) extends Table[ConformanceSnapshotTestCase](tag, "ConformanceSnapshotTestCases") {
+  class ConformanceSnapshotTestCasesTable(tag: Tag) extends Table[ConformanceSnapshotTestCase](tag, "conformancesnapshottestcases") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -767,7 +766,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotTestCases = TableQuery[ConformanceSnapshotTestCasesTable]
 
-  class ConformanceSnapshotTestCaseGroupsTable(tag: Tag) extends Table[ConformanceSnapshotTestCaseGroup](tag, "ConformanceSnapshotTestCaseGroups") {
+  class ConformanceSnapshotTestCaseGroupsTable(tag: Tag) extends Table[ConformanceSnapshotTestCaseGroup](tag, "conformancesnapshottestcasegroups") {
     def id = column[Long]("id")
     def identifier = column[String]("identifier")
     def name = column[Option[String]]("name")
@@ -777,7 +776,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotTestCaseGroups = TableQuery[ConformanceSnapshotTestCaseGroupsTable]
 
-  class ConformanceSnapshotTestSuitesTable(tag: Tag) extends Table[ConformanceSnapshotTestSuite](tag, "ConformanceSnapshotTestSuites") {
+  class ConformanceSnapshotTestSuitesTable(tag: Tag) extends Table[ConformanceSnapshotTestSuite](tag, "conformancesnapshottestsuites") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -792,7 +791,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotTestSuites = TableQuery[ConformanceSnapshotTestSuitesTable]
 
-  class ConformanceSnapshotActorsTable(tag: Tag) extends Table[ConformanceSnapshotActor](tag, "ConformanceSnapshotActors") {
+  class ConformanceSnapshotActorsTable(tag: Tag) extends Table[ConformanceSnapshotActor](tag, "conformancesnapshotactors") {
     def id = column[Long]("id")
     def actorId = column[String]("actorId")
     def name = column[String]("name")
@@ -805,7 +804,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotActors = TableQuery[ConformanceSnapshotActorsTable]
 
-  class ConformanceSnapshotSpecificationsTable(tag: Tag) extends Table[ConformanceSnapshotSpecification](tag, "ConformanceSnapshotSpecifications") {
+  class ConformanceSnapshotSpecificationsTable(tag: Tag) extends Table[ConformanceSnapshotSpecification](tag, "conformancesnapshotspecifications") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -818,7 +817,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotSpecifications = TableQuery[ConformanceSnapshotSpecificationsTable]
 
-  class ConformanceSnapshotSpecificationGroupsTable(tag: Tag) extends Table[ConformanceSnapshotSpecificationGroup](tag, "ConformanceSnapshotSpecificationGroups") {
+  class ConformanceSnapshotSpecificationGroupsTable(tag: Tag) extends Table[ConformanceSnapshotSpecificationGroup](tag, "conformancesnapshotspecificationgroups") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -830,7 +829,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotSpecificationGroups = TableQuery[ConformanceSnapshotSpecificationGroupsTable]
 
-  class ConformanceSnapshotDomainsTable(tag: Tag) extends Table[ConformanceSnapshotDomain](tag, "ConformanceSnapshotDomains") {
+  class ConformanceSnapshotDomainsTable(tag: Tag) extends Table[ConformanceSnapshotDomain](tag, "conformancesnapshotdomains") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -841,7 +840,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotDomains = TableQuery[ConformanceSnapshotDomainsTable]
 
-  class ConformanceSnapshotSystemsTable(tag: Tag) extends Table[ConformanceSnapshotSystem](tag, "ConformanceSnapshotSystems") {
+  class ConformanceSnapshotSystemsTable(tag: Tag) extends Table[ConformanceSnapshotSystem](tag, "conformancesnapshotsystems") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -854,7 +853,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotSystems = TableQuery[ConformanceSnapshotSystemsTable]
 
-  class ConformanceSnapshotOrganisationsTable(tag: Tag) extends Table[ConformanceSnapshotOrganisation](tag, "ConformanceSnapshotOrganisations") {
+  class ConformanceSnapshotOrganisationsTable(tag: Tag) extends Table[ConformanceSnapshotOrganisation](tag, "conformancesnapshotorganisations") {
     def id = column[Long]("id")
     def shortname = column[String]("sname")
     def fullname = column[String]("fname")
@@ -911,7 +910,7 @@ object PersistenceSchema {
   }
   val conformanceSnapshotOverviewCertificateMessages = TableQuery[ConformanceSnapshotOverviewCertificateMessageTable]
 
-  class ThemesTable(tag: Tag) extends Table[Theme](tag, "Themes") {
+  class ThemesTable(tag: Tag) extends Table[Theme](tag, "themes") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def key = column[String] ("theme_key")
     def description = column[Option[String]]("description", O.SqlType("TEXT"))
@@ -947,7 +946,7 @@ object PersistenceSchema {
   val themes = TableQuery[ThemesTable]
   val insertTheme = themes returning themes.map(_.id)
 
-  class ProcessedArchivesTable(tag: Tag) extends Table[ProcessedArchive](tag, "ProcessedArchives") {
+  class ProcessedArchivesTable(tag: Tag) extends Table[ProcessedArchive](tag, "processedarchives") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def hash = column[String] ("archive_hash")
     def importTime = column[Timestamp]("import_time", O.SqlType("TIMESTAMP"))
@@ -956,4 +955,5 @@ object PersistenceSchema {
   val processedArchives = TableQuery[ProcessedArchivesTable]
   val insertProcessedArchive = processedArchives returning processedArchives.map(_.id)
 
+  val allSchemas = communities.schema ++ organizations.schema ++ users.schema ++ systems.schema ++ domains.schema ++ specifications.schema ++ actors.schema ++ endpoints.schema ++ parameters.schema ++ domainParameters.schema ++ conformanceResults.schema ++ configs.schema ++ transactions.schema ++ options.schema ++ testCaseGroups.schema ++ testCases.schema ++ testSuites.schema ++ testResults.schema ++ testResultDefinitions.schema ++ testStepReports.schema ++ testInteractions.schema ++ systemHasAdmins.schema ++ systemImplementsActors.schema ++ systemImplementsOptions.schema ++ specificationHasActors.schema ++ specificationHasTestSuites.schema ++ endpointSupportsTransactions.schema ++ testCaseHasActors.schema ++ testSuiteHasActors.schema ++ testSuiteHasTestCases.schema ++ testCaseCoversOptions.schema ++ landingPages.schema ++ systemConfigurations.schema ++ legalNotices.schema ++ errorTemplates.schema ++ communityReportSettings.schema ++  conformanceCertificates.schema ++ communityKeystores.schema ++ conformanceOverviewCertificates.schema ++ conformanceOverviewCertificateMessages.schema ++ organisationParameters.schema ++ systemParameters.schema ++ organisationParameterValues.schema ++ systemParameterValues.schema ++ communityLabels.schema ++ triggers.schema ++ triggerData.schema ++ triggerFireExpressions.schema ++  communityResources.schema ++ specificationGroups.schema ++ conformanceSnapshots.schema ++ conformanceSnapshotResults.schema ++ conformanceSnapshotTestCases.schema ++ conformanceSnapshotTestCaseGroups.schema ++ conformanceSnapshotTestSuites.schema ++ conformanceSnapshotActors.schema ++ conformanceSnapshotSpecifications.schema ++ conformanceSnapshotSpecificationGroups.schema ++ conformanceSnapshotDomains.schema ++ conformanceSnapshotSystems.schema ++ conformanceSnapshotOrganisations.schema ++ conformanceSnapshotDomainParameters.schema ++ conformanceSnapshotOrganisationProperties.schema ++ conformanceSnapshotSystemProperties.schema ++ conformanceSnapshotCertificateMessages.schema ++ conformanceSnapshotOverviewCertificateMessages.schema ++ themes.schema ++ processedArchives.schema
 }

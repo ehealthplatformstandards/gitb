@@ -23,6 +23,10 @@ import java.nio.charset.StandardCharsets
 import java.sql._
 import scala.collection.mutable.ListBuffer
 import scala.util.Using
+import slick.jdbc.PostgresProfile.api._
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object PersistenceLayer {
 
@@ -76,13 +80,18 @@ object PersistenceLayer {
             }
           }
           if (count == 0) {
-            logger.info("Initialising database using baseline script {}...", Configurations.DB_LATEST_DB_BASELINE_SCRIPT.get)
+            logger.info("Create database tables from Slick table definitions.")
+            val db = Database.forConfig("slick.dbs.default.db")
+            val setup = PersistenceSchema.allSchemas.createIfNotExists
+            val schemaFuture = db.run(setup)
+            Await.result(schemaFuture, 30.seconds)
+
+            logger.info("Finish initialising database using baseline script {}...", Configurations.DB_LATEST_DB_BASELINE_SCRIPT.get)
             getBaseLineScriptStatements().foreach { statementContent =>
               Using.resource(connection.createStatement()) { statement =>
                 statement.execute(statementContent)
               }
             }
-            logger.info("Database initialised.")
           } else {
             logger.info("Database already initialised.")
           }
