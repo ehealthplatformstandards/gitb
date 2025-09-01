@@ -1,1 +1,0 @@
-ALTER TABLE `communities` ADD COLUMN `selfreg_token_help_text` TEXT;

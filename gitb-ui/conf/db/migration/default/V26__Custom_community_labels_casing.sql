@@ -1,1 +1,0 @@
-ALTER TABLE `communitylabels` ADD COLUMN `fixed_case` TINYINT DEFAULT 0 NOT NULL;

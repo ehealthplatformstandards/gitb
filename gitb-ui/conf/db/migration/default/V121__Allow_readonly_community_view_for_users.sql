@@ -1,1 +1,0 @@
-ALTER TABLE `communities` ADD COLUMN `allow_community_view` TINYINT DEFAULT 0 NOT NULL;

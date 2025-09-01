@@ -1,1 +1,0 @@
-ALTER TABLE `organisationparameters` ADD COLUMN `in_selfreg` TINYINT DEFAULT 0 NOT NULL;
